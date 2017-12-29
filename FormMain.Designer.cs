@@ -1,4 +1,4 @@
-﻿namespace publish_tool {
+﻿namespace APKCheck {
     partial class FormMain {
         /// <summary>
         /// 必需的设计器变量。
@@ -35,6 +35,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemAddFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemAddFoloer = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.mainMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -155,6 +155,11 @@
             this.columnHeader9.Text = "友盟";
             this.columnHeader9.Width = 180;
             // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "极光";
+            this.columnHeader10.Width = 180;
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -232,10 +237,10 @@
             // btnExit
             // 
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.Location = new System.Drawing.Point(722, 17);
+            this.btnExit.Location = new System.Drawing.Point(722, 11);
             this.btnExit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(136, 33);
+            this.btnExit.Size = new System.Drawing.Size(136, 45);
             this.btnExit.TabIndex = 1;
             this.btnExit.Text = "退出(&X)";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -245,10 +250,10 @@
             // 
             this.btnPack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPack.Enabled = false;
-            this.btnPack.Location = new System.Drawing.Point(556, 17);
+            this.btnPack.Location = new System.Drawing.Point(556, 11);
             this.btnPack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnPack.Name = "btnPack";
-            this.btnPack.Size = new System.Drawing.Size(136, 33);
+            this.btnPack.Size = new System.Drawing.Size(136, 45);
             this.btnPack.TabIndex = 0;
             this.btnPack.Text = "打包(&P)";
             this.btnPack.UseVisualStyleBackColor = true;
@@ -349,15 +354,10 @@
             // 
             this.folderBrowserDialog2.Description = "选择目标文件夹";
             // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "极光";
-            this.columnHeader10.Width = 180;
-            // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(870, 492);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);

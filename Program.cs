@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace publish_tool {
+namespace APKCheck {
     static class Program {
         /// <summary>
         /// 应用程序的主入口点。

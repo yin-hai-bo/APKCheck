@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using android.content.res;
 using org.xmlpull.v1;
 
-namespace publish_tool {
+namespace APKCheck {
     class ApkList : IEnumerable<ApkList.Entry> {
 
         public class Entry {
@@ -98,6 +98,10 @@ namespace publish_tool {
 
         public static bool IsFilenameAPK(string filename) {
             return 0 == String.Compare(".apk", Path.GetExtension(filename), true);
+        }
+
+        public Entry this[int index] {
+            get { return list[index]; }
         }
 
         public void Remove(Entry e) {

@@ -8,8 +8,9 @@ using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO.Compression;
+using System.Text.RegularExpressions;
 
-namespace publish_tool {
+namespace APKCheck {
     public partial class FormMain : Form {
 
         private readonly ApkList apkList = new ApkList();
@@ -172,13 +173,13 @@ namespace publish_tool {
 
         private static class TargetBuilder {
 
-            public static void execute(FormMain formMain, String versionName, String versionCode, String versionSVN) {
+            public static void Execute(FormMain formMain, String versionName, String versionCode, String commitID) {
                 try {
                     String dir = CreateDir(formMain);
                     if (dir == null) {
                         return;
                     }
-                    CopyAndMakeMD5(formMain, dir, versionName, versionCode, versionSVN);
+                    CopyAndMakeMD5(formMain, dir, versionName, versionCode, commitID);
                     MessageBox.Show(formMain, "打包完毕。\n（点击确定将打开目标文件夹）", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     NativeMethods.ShellExecute(IntPtr.Zero, null, dir, null, null, 1);
                 } catch (Exception ex) {
@@ -200,7 +201,7 @@ namespace publish_tool {
                 return dir;
             }
 
-            private static void CopyAndMakeMD5(FormMain formMain, String dir, String versionName, String versionCode, String versionSVN) {
+            private static void CopyAndMakeMD5(FormMain formMain, String dir, String versionName, String versionCode, String commitID) {
                 foreach (ApkList.Entry ae in formMain.apkList) {
                     String destFilename = dir + ae.Basename;
                     File.Copy(ae.Fullname, destFilename);
@@ -216,11 +217,11 @@ namespace publish_tool {
                 try {
                     File.Delete(tempFile);
                     ZipFile.CreateFromDirectory(dir, tempFile, CompressionLevel.NoCompression, false, Encoding.UTF8);
-                    String destZipFilename = String.Format("{0}apk_{1}_vc{2}_svn{3}.zip",
+                    String destZipFilename = String.Format("{0}apk_{1}_vc{2}_{3}.zip",
                         dir,
                         versionName,
                         versionCode,
-                        versionSVN);
+                        commitID);
                     File.Copy(tempFile, destZipFilename);
                     //
                     byte[] md5 = Utils.CalcFileMD5(destZipFilename);
@@ -242,9 +243,18 @@ namespace publish_tool {
         }
 
         private void ctrlPack_Click(object sender, EventArgs e) {
-            using (FormPack fp = FormPack.Create(currentVersionName, currentVersionCode)) {
+            String filename = this.apkList[0].Fullname;
+            Regex regex = new Regex(@"_(\w+)_g_\w+.apk$", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match match = regex.Match(filename);
+            String commitID;
+            if (match.Success) {
+                commitID = match.Groups[1].Value;
+            } else {
+                commitID = String.Empty;
+            }
+            using (FormPack fp = FormPack.Create(currentVersionName, currentVersionCode, commitID)) {
                 if (fp.ShowDialog(this) == DialogResult.OK) {
-                    TargetBuilder.execute(this, currentVersionName, currentVersionCode, fp.VersionSVN);
+                    TargetBuilder.Execute(this, currentVersionName, currentVersionCode, fp.CommitID);
                 }
             }
         }

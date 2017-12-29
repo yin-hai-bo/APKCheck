@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.IO;
 
-namespace publish_tool {
+namespace APKCheck {
     static class SignParser {
 
         public static string Execute(ZipArchive zip) {

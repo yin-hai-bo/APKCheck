@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace publish_tool {
+namespace APKCheck {
     static class Utils {
         private static char HexToChar(int value) {
             if (value < 10) {

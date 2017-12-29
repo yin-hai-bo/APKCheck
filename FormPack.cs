@@ -8,21 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace publish_tool {
+namespace APKCheck {
     public partial class FormPack : Form {
 
-        public String VersionSVN {
-            get { return textBoxSVNVersion.Text; }
+        public String CommitID {
+            get { return TextBoxCommitID.Text; }
         }
 
         private FormPack() {
             InitializeComponent();
         }
 
-        public static FormPack Create(String versionName, String versionCode) {
+        public static FormPack Create(String versionName, String versionCode, String commitId) {
             FormPack fp = new FormPack();
             fp.textBoxVersionName.Text = versionName;
             fp.textBoxVersionCode.Text = versionCode;
+            fp.TextBoxCommitID.Text = commitId;
             return fp;
         }
 
@@ -34,22 +35,22 @@ namespace publish_tool {
             this.DialogResult = DialogResult.OK;
         }
 
-        private void textBoxSVNVersion_TextChanged(object sender, EventArgs e) {
-            btnOk.Enabled = textBoxSVNVersion.Text.Length > 0;
-        }
-
         private void btnCancel_Click(object sender, EventArgs e) {
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void textBoxSVNVersion_KeyPress(object sender, KeyPressEventArgs e) {
-            e.Handled = e.KeyChar != 8
-                && e.KeyChar != 3
-                && e.KeyChar != 24
-                && e.KeyChar != 22
-                && !Char.IsDigit(e.KeyChar);
+        private void TextBoxCommitID_TextChanged(object sender, EventArgs e) {
+            this.btnOk.Enabled = TextBoxCommitID.Text.Length > 0;
         }
 
-
+        private void TextBoxCommitID_KeyPress(object sender, KeyPressEventArgs e) {
+            var keyChar = e.KeyChar;
+            e.Handled = keyChar != 8
+                && keyChar != 3
+                && keyChar != 24
+                && keyChar != 22
+                && !Char.IsDigit(keyChar)
+                && !Char.IsLetter(keyChar);
+        }
     }
 }

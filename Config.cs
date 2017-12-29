@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace publish_tool {
+namespace APKCheck {
     class Config {
 
         private static readonly Config instance = new Config();

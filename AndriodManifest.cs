@@ -7,7 +7,7 @@ using android.content.res;
 using org.xmlpull.v1;
 using android.util;
 
-namespace publish_tool {
+namespace APKCheck {
     class AndriodManifest {
         public String VersionName { get; private set; }
         public String VersionCode { get; private set; }
