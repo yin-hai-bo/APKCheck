@@ -21,33 +21,33 @@ namespace publish_tool {
         }
 
         private void RefreshCtrls() {
-            bool noerror = RefreshListView();
-            btnPack.Enabled = mainMenuItemPack.Enabled = menuItemPack.Enabled = (noerror && !apkList.IsEmpty);
+            bool ok = RefreshListView();
+            btnPack.Enabled = mainMenuItemPack.Enabled = menuItemPack.Enabled = (ok && !apkList.IsEmpty);
             labelMessage.Text = String.Format("APK文件数：{0}", apkList.Count);
             //
             HashSet<string> channels = new HashSet<string>();
             HashSet<string> duplicate = new HashSet<string>();
             foreach (ApkList.Entry ae in this.apkList) {
-                if (!channels.Add(ae.AndriodManifest.UmengChannel)) {
-                    duplicate.Add(ae.AndriodManifest.UmengChannel);
+                string channel = ae.AndriodManifest.UmengChannel;
+                if (!channels.Add(channel)) {
+                    duplicate.Add(channel);
                 }
             }
             if (duplicate.Count > 0) {
                 StringBuilder sb = new StringBuilder("发现重复渠道名：\r\n");
                 foreach (string s in duplicate) {
-                    sb.Append("    ");
-                    sb.AppendLine(s);
+                    sb.Append('"').Append(s).AppendLine("\"");
                 }
                 MessageBox.Show(this, sb.ToString(), "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private bool RefreshListView() {
-            bool noerror = true;
-            currentVersionName = currentVersionCode = null;
+            bool ok = true;
             lvApkList.BeginUpdate();
             try {
                 lvApkList.Items.Clear();
+                this.currentVersionCode = this.currentVersionName = null;
                 ApkList.Entry firstEntry = null;
                 foreach (ApkList.Entry entry in apkList) {
                     var lvItem = lvApkList.Items.Add(entry.Basename);
@@ -65,39 +65,74 @@ namespace publish_tool {
                     //
                     if (firstEntry == null) {
                         firstEntry = entry;
-                        currentVersionName = entry.AndriodManifest.VersionName;
-                        currentVersionCode = entry.AndriodManifest.VersionCode;
-                    } else {
-                        if (entry.SignMD5 != firstEntry.SignMD5) {
-                            highLightListViewSubItem(lvItem, 3);
-                            noerror = false;
-                        }
-                        if (entry.AndriodManifest.VersionName != firstEntry.AndriodManifest.VersionName) {
-                            highLightListViewSubItem(lvItem, 5);
-                            noerror = false;
-                        }
-                        if (entry.AndriodManifest.VersionCode != firstEntry.AndriodManifest.VersionCode) {
-                            highLightListViewSubItem(lvItem, 6);
-                            noerror = false;
-                        }
-                        if (entry.AndriodManifest.UmengKey != firstEntry.AndriodManifest.UmengKey) {
-                            highLightListViewSubItem(lvItem, 8);
-                            noerror = false;
-                        }
+                        this.currentVersionName = entry.AndriodManifest.VersionName;
+                        this.currentVersionCode = entry.AndriodManifest.VersionCode;
                     }
-                    if (entry.AndriodManifest.UmengChannel == null || !entry.Basename.Contains(entry.AndriodManifest.UmengChannel) ) {
-                        lvItem.ForeColor = Color.Red;
-                        noerror = false;
+                    if (!IsEntryValid(firstEntry, entry, lvItem)) {
+                        ok = false;
                     }
                 }
             } finally {
                 lvApkList.EndUpdate();
             }
-            return noerror;
+            return ok;
         }
 
-        private static void highLightListViewSubItem(ListViewItem lvi, int index) {
-            lvi.SubItems[index].ForeColor = Color.Red;
+        private static bool IsEntryValid(ApkList.Entry firstEntry, ApkList.Entry entry, ListViewItem lvItem) {
+            bool result = true;
+            //
+            string signMD5 = entry.SignMD5;
+            if (signMD5 == null || signMD5 != firstEntry.SignMD5 || !CheckEqualIfRequired(Config.Instance.ExpectedSignMD5, signMD5)) {
+                HighLightListViewSubItem(lvItem, 3);
+                result = false;
+            }
+            string channel = entry.AndriodManifest.UmengChannel;
+            if (channel == null) {
+                HighLightListViewSubItem(lvItem, 7);
+                result = false;
+            } else if (!entry.Basename.Contains(channel)) {
+                lvItem.ForeColor = Color.Red;
+                result = false;
+            }
+            string versionName = entry.AndriodManifest.VersionName;
+            if (versionName == null || versionName != firstEntry.AndriodManifest.VersionName) {
+                HighLightListViewSubItem(lvItem, 5);
+                result = false;
+            }
+            if (versionName != null && !entry.Basename.Contains(versionName)) {
+                lvItem.ForeColor = Color.Red;
+                result = false;
+            }
+            string versionCode = entry.AndriodManifest.VersionCode;
+            if (versionCode == null || versionCode != firstEntry.AndriodManifest.VersionCode) {
+                HighLightListViewSubItem(lvItem, 6);
+                result = false;
+            }
+            if (versionCode != null && !entry.Basename.Contains(versionCode)) {
+                lvItem.ForeColor = Color.Red;
+                result = false;
+            }
+            string umengKey = entry.AndriodManifest.UmengKey;
+            if (umengKey == null || umengKey != firstEntry.AndriodManifest.UmengKey || !CheckEqualIfRequired(Config.Instance.ExpectedUMengKey, umengKey)) {
+                HighLightListViewSubItem(lvItem, 8);
+                result = false;
+            }
+            string jpushKey = entry.AndriodManifest.JPushKey;
+            if (jpushKey == null || jpushKey != firstEntry.AndriodManifest.JPushKey || !CheckEqualIfRequired(Config.Instance.ExpectedJPushKey, jpushKey)) {
+                HighLightListViewSubItem(lvItem, 9);
+                result = false;
+            }
+            return result;
+        }
+
+        private static bool CheckEqualIfRequired(String expectedValue, String actualValue) {
+            return String.IsNullOrEmpty(expectedValue) || actualValue == expectedValue;
+        }
+
+        private static void HighLightListViewSubItem(ListViewItem lvi, int index) {
+            var item = lvi.SubItems[index];
+            item.BackColor = Color.Red;
+            item.ForeColor = Color.Yellow;
         }
 
         private void lvApkList_DragEnter(object sender, DragEventArgs e) {

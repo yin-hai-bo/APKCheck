@@ -28,7 +28,7 @@ namespace publish_tool {
                     }
                     line = line.Trim();
                     if (String.Compare(line, 0, "MD5: ", 0, 5) == 0) {
-                        return line.Substring(5);
+                        return line.Substring(5).Trim();
                     }
                 }
                 return null;
