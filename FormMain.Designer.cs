@@ -59,6 +59,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.mainMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -69,10 +70,10 @@
             // 
             this.panel2.Controls.Add(this.lvApkList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 25);
+            this.panel2.Location = new System.Drawing.Point(0, 32);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(870, 400);
+            this.panel2.Size = new System.Drawing.Size(870, 393);
             this.panel2.TabIndex = 1;
             // 
             // lvApkList
@@ -87,7 +88,8 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8,
-            this.columnHeader9});
+            this.columnHeader9,
+            this.columnHeader10});
             this.lvApkList.ContextMenuStrip = this.contextMenuStrip1;
             this.lvApkList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvApkList.FullRowSelect = true;
@@ -98,7 +100,7 @@
             this.lvApkList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lvApkList.Name = "lvApkList";
             this.lvApkList.ShowItemToolTips = true;
-            this.lvApkList.Size = new System.Drawing.Size(870, 400);
+            this.lvApkList.Size = new System.Drawing.Size(870, 393);
             this.lvApkList.TabIndex = 0;
             this.lvApkList.UseCompatibleStateImageBehavior = false;
             this.lvApkList.View = System.Windows.Forms.View.Details;
@@ -114,7 +116,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "目录";
-            this.columnHeader2.Width = 120;
+            this.columnHeader2.Width = 0;
             // 
             // columnHeader3
             // 
@@ -130,16 +132,18 @@
             // columnHeader5
             // 
             this.columnHeader5.Text = "文件MD5";
-            this.columnHeader5.Width = 200;
+            this.columnHeader5.Width = 0;
             // 
             // columnHeader6
             // 
-            this.columnHeader6.Text = "VersionName";
+            this.columnHeader6.Text = "VN";
+            this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader6.Width = 80;
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "VersionCode";
+            this.columnHeader7.Text = "VC";
+            this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // columnHeader8
             // 
@@ -148,11 +152,12 @@
             // 
             // columnHeader9
             // 
-            this.columnHeader9.Text = "友盟KEY";
+            this.columnHeader9.Text = "友盟";
             this.columnHeader9.Width = 180;
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemAddFile,
             this.menuItemAddFoloer,
@@ -161,45 +166,45 @@
             this.toolStripMenuItem4,
             this.menuItemPack});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 104);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(209, 128);
             // 
             // menuItemAddFile
             // 
             this.menuItemAddFile.Name = "menuItemAddFile";
-            this.menuItemAddFile.Size = new System.Drawing.Size(162, 22);
+            this.menuItemAddFile.Size = new System.Drawing.Size(208, 28);
             this.menuItemAddFile.Text = "添加文件(&F)...";
             this.menuItemAddFile.Click += new System.EventHandler(this.ctrlAddFils_Click);
             // 
             // menuItemAddFoloer
             // 
             this.menuItemAddFoloer.Name = "menuItemAddFoloer";
-            this.menuItemAddFoloer.Size = new System.Drawing.Size(162, 22);
+            this.menuItemAddFoloer.Size = new System.Drawing.Size(208, 28);
             this.menuItemAddFoloer.Text = "添加文件夹(&D)...";
             this.menuItemAddFoloer.Click += new System.EventHandler(this.ctrlAddFolder_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
             // 
             // menuItemRemoveSelection
             // 
             this.menuItemRemoveSelection.Enabled = false;
             this.menuItemRemoveSelection.Name = "menuItemRemoveSelection";
-            this.menuItemRemoveSelection.Size = new System.Drawing.Size(162, 22);
+            this.menuItemRemoveSelection.Size = new System.Drawing.Size(208, 28);
             this.menuItemRemoveSelection.Text = "移除所选项(&R)";
             this.menuItemRemoveSelection.Click += new System.EventHandler(this.ctrlRemoveSelection_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(205, 6);
             // 
             // menuItemPack
             // 
             this.menuItemPack.Enabled = false;
             this.menuItemPack.Name = "menuItemPack";
-            this.menuItemPack.Size = new System.Drawing.Size(162, 22);
+            this.menuItemPack.Size = new System.Drawing.Size(208, 28);
             this.menuItemPack.Text = "打包(&P)...";
             this.menuItemPack.Click += new System.EventHandler(this.ctrlPack_Click);
             // 
@@ -220,7 +225,7 @@
             this.labelMessage.AutoSize = true;
             this.labelMessage.Location = new System.Drawing.Point(13, 25);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(86, 17);
+            this.labelMessage.Size = new System.Drawing.Size(128, 24);
             this.labelMessage.TabIndex = 2;
             this.labelMessage.Text = "APK文件数：0";
             // 
@@ -264,11 +269,12 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件FToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(870, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(870, 32);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -284,58 +290,58 @@
             this.toolStripMenuItem2,
             this.mainMenuItemExit});
             this.文件FToolStripMenuItem.Name = "文件FToolStripMenuItem";
-            this.文件FToolStripMenuItem.Size = new System.Drawing.Size(58, 21);
+            this.文件FToolStripMenuItem.Size = new System.Drawing.Size(80, 28);
             this.文件FToolStripMenuItem.Text = "文件(&F)";
             // 
             // mainMenuItemAddFile
             // 
             this.mainMenuItemAddFile.Name = "mainMenuItemAddFile";
-            this.mainMenuItemAddFile.Size = new System.Drawing.Size(162, 22);
+            this.mainMenuItemAddFile.Size = new System.Drawing.Size(220, 30);
             this.mainMenuItemAddFile.Text = "添加文件(&F)...";
             this.mainMenuItemAddFile.Click += new System.EventHandler(this.ctrlAddFils_Click);
             // 
             // mainMenuItemAddFolder
             // 
             this.mainMenuItemAddFolder.Name = "mainMenuItemAddFolder";
-            this.mainMenuItemAddFolder.Size = new System.Drawing.Size(162, 22);
+            this.mainMenuItemAddFolder.Size = new System.Drawing.Size(220, 30);
             this.mainMenuItemAddFolder.Text = "添加文件夹(&D)...";
             this.mainMenuItemAddFolder.Click += new System.EventHandler(this.ctrlAddFolder_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 6);
             // 
             // mainMenuItemRemoveSelection
             // 
             this.mainMenuItemRemoveSelection.Enabled = false;
             this.mainMenuItemRemoveSelection.Name = "mainMenuItemRemoveSelection";
-            this.mainMenuItemRemoveSelection.Size = new System.Drawing.Size(162, 22);
+            this.mainMenuItemRemoveSelection.Size = new System.Drawing.Size(220, 30);
             this.mainMenuItemRemoveSelection.Text = "移除所选项(&R)";
             this.mainMenuItemRemoveSelection.Click += new System.EventHandler(this.ctrlRemoveSelection_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(217, 6);
             // 
             // mainMenuItemPack
             // 
             this.mainMenuItemPack.Enabled = false;
             this.mainMenuItemPack.Name = "mainMenuItemPack";
-            this.mainMenuItemPack.Size = new System.Drawing.Size(162, 22);
+            this.mainMenuItemPack.Size = new System.Drawing.Size(220, 30);
             this.mainMenuItemPack.Text = "打包(&P)...";
             this.mainMenuItemPack.Click += new System.EventHandler(this.ctrlPack_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(217, 6);
             // 
             // mainMenuItemExit
             // 
             this.mainMenuItemExit.Name = "mainMenuItemExit";
-            this.mainMenuItemExit.Size = new System.Drawing.Size(162, 22);
+            this.mainMenuItemExit.Size = new System.Drawing.Size(220, 30);
             this.mainMenuItemExit.Text = "退出(X)";
             this.mainMenuItemExit.Click += new System.EventHandler(this.ctrlExit_Click);
             // 
@@ -343,9 +349,14 @@
             // 
             this.folderBrowserDialog2.Description = "选择目标文件夹";
             // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "极光";
+            this.columnHeader10.Width = 180;
+            // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(870, 492);
             this.Controls.Add(this.panel2);
@@ -357,7 +368,7 @@
             this.MinimumSize = new System.Drawing.Size(320, 280);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "APK发布工具";
+            this.Text = "APK检查工具";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.panel2.ResumeLayout(false);
@@ -408,6 +419,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem menuItemPack;
         private System.Windows.Forms.ToolStripMenuItem mainMenuItemPack;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
     }
 }
 

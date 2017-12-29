@@ -28,8 +28,8 @@ namespace publish_tool {
             HashSet<string> channels = new HashSet<string>();
             HashSet<string> duplicate = new HashSet<string>();
             foreach (ApkList.Entry ae in this.apkList) {
-                if (!channels.Add(ae.UmengChannel)) {
-                    duplicate.Add(ae.UmengChannel);
+                if (!channels.Add(ae.AndriodManifest.UmengChannel)) {
+                    duplicate.Add(ae.AndriodManifest.UmengChannel);
                 }
             }
             if (duplicate.Count > 0) {
@@ -54,37 +54,38 @@ namespace publish_tool {
                     lvItem.Tag = entry;
                     lvItem.UseItemStyleForSubItems = false;
                     lvItem.SubItems.Add(entry.Directory);
-                    lvItem.SubItems.Add(entry.FileSize.ToString("#,##0"));
+                    lvItem.SubItems.Add((entry.FileSize / 1048576f).ToString("0.00 M"));
                     lvItem.SubItems.Add(entry.SignMD5);
                     lvItem.SubItems.Add(entry.MD5Hash);
-                    lvItem.SubItems.Add(entry.VersionName);
-                    lvItem.SubItems.Add(entry.VersionCode);
-                    lvItem.SubItems.Add(entry.UmengChannel);
-                    lvItem.SubItems.Add(entry.UmengKey);
+                    lvItem.SubItems.Add(entry.AndriodManifest.VersionName);
+                    lvItem.SubItems.Add(entry.AndriodManifest.VersionCode);
+                    lvItem.SubItems.Add(entry.AndriodManifest.UmengChannel);
+                    lvItem.SubItems.Add(entry.AndriodManifest.UmengKey);
+                    lvItem.SubItems.Add(entry.AndriodManifest.JPushKey);
                     //
                     if (firstEntry == null) {
                         firstEntry = entry;
-                        currentVersionName = entry.VersionName;
-                        currentVersionCode = entry.VersionCode;
+                        currentVersionName = entry.AndriodManifest.VersionName;
+                        currentVersionCode = entry.AndriodManifest.VersionCode;
                     } else {
                         if (entry.SignMD5 != firstEntry.SignMD5) {
                             highLightListViewSubItem(lvItem, 3);
                             noerror = false;
                         }
-                        if (entry.VersionName != firstEntry.VersionName) {
+                        if (entry.AndriodManifest.VersionName != firstEntry.AndriodManifest.VersionName) {
                             highLightListViewSubItem(lvItem, 5);
                             noerror = false;
                         }
-                        if (entry.VersionCode != firstEntry.VersionCode) {
+                        if (entry.AndriodManifest.VersionCode != firstEntry.AndriodManifest.VersionCode) {
                             highLightListViewSubItem(lvItem, 6);
                             noerror = false;
                         }
-                        if (entry.UmengKey != firstEntry.UmengKey) {
+                        if (entry.AndriodManifest.UmengKey != firstEntry.AndriodManifest.UmengKey) {
                             highLightListViewSubItem(lvItem, 8);
                             noerror = false;
                         }
                     }
-                    if (!entry.Basename.Contains(entry.UmengChannel) && !entry.UmengChannel.Contains(entry.Basename)) {
+                    if (entry.AndriodManifest.UmengChannel == null || !entry.Basename.Contains(entry.AndriodManifest.UmengChannel) ) {
                         lvItem.ForeColor = Color.Red;
                         noerror = false;
                     }

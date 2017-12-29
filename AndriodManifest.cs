@@ -8,14 +8,15 @@ using org.xmlpull.v1;
 using android.util;
 
 namespace publish_tool {
-    class AndriodManifestParser {
+    class AndriodManifest {
         public String VersionName { get; private set; }
         public String VersionCode { get; private set; }
         public String PackageName { get; private set; }
         public String UmengKey { get; private set; }
         public String UmengChannel { get; private set; }
+        public String JPushKey { get; private set; }
 
-        public AndriodManifestParser(byte[] data) {
+        public AndriodManifest(byte[] data) {
             if (data == null || data.Length == 0) {
                 return;
             }
@@ -32,12 +33,12 @@ namespace publish_tool {
                         switch (parser.getDepth()) {
                         case 1:
                             if ("manifest" == parser.getName()) {
-                                parseRootElement(parser);
+                                ParseRootElement(parser);
                             }
                             break;
                         case 3:
                             if ("meta-data" == parser.getName()) {
-                                parseMetaDataElement(parser);
+                                ParseMetaDataElement(parser);
                             }
                             break;
                         }
@@ -48,7 +49,7 @@ namespace publish_tool {
             }
         }
 
-        private void parseRootElement(AXmlResourceParser parser) {
+        private void ParseRootElement(AXmlResourceParser parser) {
             for (int i = parser.getAttributeCount() - 1; i >= 0; --i) {
                 switch (parser.getAttributeName(i)) {
                 case "versionName":
@@ -64,7 +65,7 @@ namespace publish_tool {
             }
         }
 
-        private void parseMetaDataElement(AXmlResourceParser parser) {
+        private void ParseMetaDataElement(AXmlResourceParser parser) {
             String name = null;
             String value = null;
             for (int i = parser.getAttributeCount() - 1; i >= 0; --i) {
@@ -87,6 +88,9 @@ namespace publish_tool {
                 break;
             case "UMENG_CHANNEL":
                 this.UmengChannel = value;
+                break;
+            case "JPUSH_APPKEY":
+                this.JPushKey = value;
                 break;
             }
         }

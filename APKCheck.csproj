@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AndriodManifestParser.cs" />
+    <Compile Include="AndriodManifest.cs" />
     <Compile Include="ApkList.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>

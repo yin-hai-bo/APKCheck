@@ -11,62 +11,34 @@ namespace publish_tool {
     class ApkList : IEnumerable<ApkList.Entry> {
 
         public class Entry {
-            public string Fullname {
-                get;
-                private set;
-            }
 
-            public long FileSize {
-                get;
-                private set;
-            }
+            public string Fullname { get; private set; }
+
+            public string Directory { get; private set; }
+
+            public long FileSize { get; private set; }
 
             public string SignMD5 { get; private set; }
 
             public string MD5Hash { get; private set; }
 
-            public string VersionName { get; private set; }
+            public string Basename { get; private set; }
 
-            public string VersionCode { get; private set; }
-
-            public string UmengChannel { get; private set; }
-
-            public string UmengKey { get; private set; }
-
-            public string Directory {
-                get;
-                private set;
-            }
-            public string Basename {
-                get;
-                private set;
-            }
+            public AndriodManifest AndriodManifest { get; private set; }
 
             public Entry(string fullname) {
                 this.Fullname = fullname;
                 this.Directory = Utils.ExtractDirectoryName(this.Fullname);
                 this.Basename = Path.GetFileName(this.Fullname);
-                this.build();
-
+                this.SignMD5 = SignParser.execute(Fullname);
                 //
-                /*
-                this.MD5Hash = String.Empty;
-                this.SignMD5 = String.Empty;
-                this.VersionName = String.Empty;
-                this.VersionCode = String.Empty;
-                this.Channel = String.Empty;
-                 */
-            }
-
-            public void build() {
                 using (Stream input = new FileStream(Fullname, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                     this.FileSize = input.Seek(0, SeekOrigin.End);
                     input.Seek(0, SeekOrigin.Begin);
                     this.MD5Hash = CalcMD5(input);
                     input.Seek(0, SeekOrigin.Begin);
-                    CheckAPK(input);
+                    this.AndriodManifest = ExtractAndroidManifest(input);
                 }
-                this.SignMD5 = SignParser.execute(Fullname);
             }
 
             private static String CalcMD5(Stream input) {
@@ -95,22 +67,13 @@ namespace publish_tool {
                 }
             }
 
-            private void CheckAPK(Stream input) {
+            private static AndriodManifest ExtractAndroidManifest(Stream input) {
                 using (ZipArchive zip = new ZipArchive(input, ZipArchiveMode.Read)) {
                     ZipArchiveEntry zae = zip.GetEntry("AndroidManifest.xml");
                     byte[] content = ExtractZipArchive(zae);
-                    parseAndroidManifestXML(content);
+                    return new AndriodManifest(content);
                 }
             }
-
-            private void parseAndroidManifestXML(byte[] content) {
-                AndriodManifestParser amp = new AndriodManifestParser(content);
-                this.VersionName = amp.VersionName;
-                this.VersionCode = amp.VersionCode;
-                this.UmengChannel = amp.UmengChannel;
-                this.UmengKey = amp.UmengKey;
-            }
-
         }
 
         private int BinarySearch(String fullname) {
@@ -132,7 +95,7 @@ namespace publish_tool {
 
         private readonly List<Entry> list = new List<Entry>();
 
-        public static bool isFilenameAPK(string filename) {
+        public static bool IsFilenameAPK(string filename) {
             return 0 == String.Compare(".apk", Path.GetExtension(filename), true);
         }
 
@@ -141,7 +104,7 @@ namespace publish_tool {
         }
 
         public bool Add(string fileOrDirectoryName) {
-            if (File.Exists(fileOrDirectoryName) && isFilenameAPK(fileOrDirectoryName)) {
+            if (File.Exists(fileOrDirectoryName) && IsFilenameAPK(fileOrDirectoryName)) {
                 return AddFile(fileOrDirectoryName);
             }
             if (!Directory.Exists(fileOrDirectoryName)) {
