@@ -68,7 +68,9 @@ namespace publish_tool {
                         this.currentVersionName = entry.AndriodManifest.VersionName;
                         this.currentVersionCode = entry.AndriodManifest.VersionCode;
                     }
-                    if (!IsEntryValid(firstEntry, entry, lvItem)) {
+                    if (IsEntryValid(firstEntry, entry, lvItem)) {
+                        lvItem.ForeColor = Color.Green;
+                    } else {
                         ok = false;
                     }
                 }

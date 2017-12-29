@@ -30,14 +30,17 @@ namespace publish_tool {
                 this.Fullname = fullname;
                 this.Directory = Utils.ExtractDirectoryName(this.Fullname);
                 this.Basename = Path.GetFileName(this.Fullname);
-                this.SignMD5 = SignParser.execute(Fullname);
                 //
                 using (Stream input = new FileStream(Fullname, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                     this.FileSize = input.Seek(0, SeekOrigin.End);
                     input.Seek(0, SeekOrigin.Begin);
                     this.MD5Hash = CalcMD5(input);
+                    //
                     input.Seek(0, SeekOrigin.Begin);
-                    this.AndriodManifest = ExtractAndroidManifest(input);
+                    using (ZipArchive zip = new ZipArchive(input, ZipArchiveMode.Read)) {
+                        this.SignMD5 = SignParser.Execute(zip);
+                        this.AndriodManifest = ExtractAndroidManifest(zip);
+                    }
                 }
             }
 
@@ -67,12 +70,10 @@ namespace publish_tool {
                 }
             }
 
-            private static AndriodManifest ExtractAndroidManifest(Stream input) {
-                using (ZipArchive zip = new ZipArchive(input, ZipArchiveMode.Read)) {
-                    ZipArchiveEntry zae = zip.GetEntry("AndroidManifest.xml");
-                    byte[] content = ExtractZipArchive(zae);
-                    return new AndriodManifest(content);
-                }
+            private static AndriodManifest ExtractAndroidManifest(ZipArchive zip) {
+                ZipArchiveEntry zae = zip.GetEntry("AndroidManifest.xml");
+                byte[] content = ExtractZipArchive(zae);
+                return new AndriodManifest(content);
             }
         }
 
