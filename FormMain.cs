@@ -244,7 +244,7 @@ namespace APKCheck {
 
         private void ctrlPack_Click(object sender, EventArgs e) {
             String filename = this.apkList[0].Fullname;
-            Regex regex = new Regex(@"_(\w+)_g_\w+.apk$", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Regex regex = new Regex(@"_([0-9a-zA-Z]+)_g_\w+.apk$", RegexOptions.IgnoreCase | RegexOptions.Singleline);
             Match match = regex.Match(filename);
             String commitID;
             if (match.Success) {
